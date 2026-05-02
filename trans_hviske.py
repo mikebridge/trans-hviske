@@ -90,7 +90,8 @@ def transcribe_and_align(
     result = model.transcribe(
         audio,
         batch_size=batch_size,
-        language=language
+        language=language,
+        print_progress=True
     )
 
     align_language = result.get("language") or language
@@ -105,7 +106,8 @@ def transcribe_and_align(
         metadata,
         audio,
         device,
-        return_char_alignments=False
+        return_char_alignments=False,
+        print_progress=True
     )
 
     return aligned
@@ -145,6 +147,8 @@ def main() -> None:
 
     audio = whisperx.load_audio(str(audio_file))
 
+    duration = len(audio) / 16000
+    print(f"Loaded {audio_file.name} ({duration:.1f}s)")
     print("Transcribing...")
     result = transcribe_and_align(
         whisperx=whisperx,
